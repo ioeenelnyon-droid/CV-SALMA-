@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Salma Alimah Salsabil - DKV Student</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        lilac: {
+                            50: '#faf5ff',
+                            100: '#f3e8ff',
+                            200: '#e9d5ff',
+                            300: '#d8b4fe',
+                            400: '#c084fc',
+                            500: '#a855f7', // Purple main
+                            600: '#9333ea',
+                            700: '#7e22ce',
+                            800: '#6b21a8',
+                            900: '#4c1d95',
+                        },
+                        grape: {
+                            300: '#c4b5fd',
+                            500: '#8b5cf6', // Violet/Grape accent
+                            700: '#5b21b6',
+                            900: '#2e1065',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Quicksand', 'sans-serif'],
+                        cute: ['Fredoka', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #faf5ff;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #9333ea;
+            border-radius: 4px;
+        }
+
+        /* Dynamic Site Background Styling */
+        #site-bg-layer {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: background-image 0.5s ease-in-out, opacity 0.5s ease-in-out;
+            opacity: 0.30;
+            pointer-events: none;
+        }
+
+        /* Falling Items Container */
+        #falling-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 50;
+            overflow: hidden;
+        }
+
+        .falling-item {
+            position: absolute;
+            top: -50px;
+            cursor: pointer;
+            pointer-events: auto;
+            user-select: none;
+            transition: transform 0.2s ease;
+            animation: fall linear infinite;
+            filter: drop-shadow(0 4px 6px rgba(147, 51, 234, 0.25));
+        }
+
+        .falling-item:hover {
+            transform: scale(1.35);
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-50px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(105vh) rotate(360deg);
+                opacity: 0.85;
+            }
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(-1.5deg); }
+        }
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        /* Glassmorphism effect */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .glass-dark {
+            background: rgba(46, 16, 101, 0.90);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-lilac-50 text-slate-800 font-sans min-h-screen relative overflow-x-hidden">
+
+    <!-- DYNAMIC BACKGROUND LAYER -->
+    <div id="site-bg-layer" style="background-image: url('photo 1_2.jpeg');"></div>
+
+    <!-- FALLING GRAPES & STARS ANIMATION CONTAINER -->
+    <div id="falling-container"></div>
+
+    <!-- FLOATING SCORE BOARD / COLLECTED COUNTER -->
+    <div class="fixed top-4 right-4 z-50 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border-2 border-lilac-300 flex items-center gap-2 font-cute text-lilac-800 select-none">
+        <span class="text-xl">🍇⭐</span>
+        <span class="text-xs md:text-sm font-bold">Claimed: <span id="claim-count" class="text-lilac-600 text-base">0</span></span>
+    </div>
+
+    <!-- HIDDEN FILE INPUT UNTUK GANTI FOTO INSTAN -->
+    <input type="file" id="profile-upload" accept="image/*" class="hidden" onchange="previewCustomImage(event, 'main-user-photo')">
+    <input type="file" id="bg1-upload" accept="image/*" class="hidden" onchange="previewCustomBg(event, 'bg-img-1')">
+    <input type="file" id="bg2-upload" accept="image/*" class="hidden" onchange="previewCustomBg(event, 'bg-img-2')">
+    <input type="file" id="bg3-upload" accept="image/*" class="hidden" onchange="previewCustomBg(event, 'bg-img-3')">
+
+    <!-- MAIN CONTAINER -->
+    <div class="max-w-5xl mx-auto px-4 py-8 relative z-10 space-y-12">
+
+        <!-- HEADER BANNER / INTRO SECTION -->
+        <header class="glass-card rounded-3xl p-6 md:p-10 shadow-xl border-2 border-lilac-200 relative overflow-hidden">
+            <!-- Background Decorative Lilac Gingham/Dots -->
+            <div class="absolute inset-0 opacity-15 pointer-events-none" style="background-image: radial-gradient(#9333ea 1.2px, transparent 1.2px); background-size: 16px 16px;"></div>
+
+            <div class="grid md:grid-cols-12 gap-8 items-center relative z-10">
+                
+                <!-- FOTO UTAMA PROFIL (SALMA ALIMAH SALSABIL) -->
+                <div class="md:col-span-5 flex flex-col items-center">
+                    <div class="relative group animate-float">
+                        <!-- Glow behind frame -->
+                        <div class="absolute -inset-3 bg-gradient-to-tr from-lilac-500 via-grape-300 to-pink-300 rounded-3xl blur-md opacity-75 group-hover:opacity-100 transition duration-500"></div>
+                        
+                        <!-- Main Photo Box Lilac Kawaii Frame Style -->
+                        <div class="relative bg-white p-3 rounded-3xl shadow-xl border-2 border-lilac-300">
+                            <div class="w-64 h-[410px] rounded-2xl overflow-hidden shadow-inner border border-lilac-100 relative bg-lilac-100">
+                                <img id="main-user-photo" 
+                                     src="photo (1).png" 
+                                     onerror="this.onerror=null; this.src='https://placehold.co/400x650/7e22ce/ffffff?text=Salma+Alimah+Salsabil\n(Klik+Tombol+Upload+di+Bawah)';"
+                                     alt="Salma Alimah Salsabil" 
+                                     class="w-full h-full object-cover">
+                                
+                                <!-- Tombol Ganti Foto Cepat saat di-hover -->
+                                <button onclick="document.getElementById('profile-upload').click()" class="absolute bottom-3 left-1/2 -translate-x-1/2 bg-black/70 hover:bg-lilac-700 text-white text-[11px] font-cute px-3 py-1.5 rounded-full backdrop-blur-sm opacity-90 hover:opacity-100 transition flex items-center gap-1.5 whitespace-nowrap shadow">
+                                    <i class="fa-solid fa-camera"></i> Pilih Foto dari Galeri
+                                </button>
+                            </div>
+                            
+                            <!-- Kawaii Badge -->
+                            <div class="absolute -bottom-3 -right-2 bg-lilac-600 text-white font-cute px-4 py-1.5 rounded-full text-xs shadow-md border-2 border-white flex items-center gap-1.5">
+                                <span>🍇 Lilac DKV</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BIODATA SINGKAT & PROFILE HEADER -->
+                <div class="md:col-span-7 space-y-4 text-center md:text-left">
+                    <div class="inline-block px-3.5 py-1 rounded-full bg-lilac-100 text-lilac-800 text-xs font-bold tracking-wide uppercase font-cute border border-lilac-300">
+                        ✨ Creative DKV Student
+                    </div>
+                    
+                    <h1 class="text-3xl md:text-5xl font-extrabold text-lilac-900 font-cute tracking-tight leading-tight">
+                        Salma Alimah Salsabil
+                    </h1>
+                    
+                    <p class="text-grape-700 font-medium text-base md:text-lg leading-relaxed">
+                        Siswa Desain Komunikasi Visual (DKV) yang memiliki ketertarikan tinggi pada estetika visual, desain grafis modern, ilustrasi karakter, dan seni digital.
+                    </p>
+
+                    <!-- QUICK DETAILS -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-sm text-slate-700">
+                        <div class="flex items-center justify-center md:justify-start gap-2.5 bg-white/75 p-2.5 rounded-xl border border-lilac-200">
+                            <i class="fa-solid fa-location-dot text-lilac-600"></i>
+                            <span>Domisili: <strong>Jepara Kota</strong></span>
+                        </div>
+                        <div class="flex items-center justify-center md:justify-start gap-2.5 bg-white/75 p-2.5 rounded-xl border border-lilac-200">
+                            <i class="fa-solid fa-graduation-cap text-grape-500"></i>
+                            <span>Jurusan: <strong>DKV (Desain Komunikasi Visual)</strong></span>
+                        </div>
+                        <div class="flex items-center justify-center md:justify-start gap-2.5 bg-white/75 p-2.5 rounded-xl border border-lilac-200">
+                            <i class="fa-brands fa-whatsapp text-lilac-600 font-bold"></i>
+                            <span>WhatsApp: <strong>+62 897-6913-092</strong></span>
+                        </div>
+                        <div class="flex items-center justify-center md:justify-start gap-2.5 bg-white/75 p-2.5 rounded-xl border border-lilac-200">
+                            <i class="fa-solid fa-wand-sparkles text-grape-500"></i>
+                            <span>Style: <strong>Lilac & Visual Art</strong></span>
+                        </div>
+                    </div>
+
+                    <!-- ACTION BUTTONS -->
+                    <div class="pt-4 flex flex-wrap justify-center md:justify-start gap-3">
+                        <a href="https://wa.me/628976913092" target="_blank" class="bg-lilac-600 hover:bg-lilac-700 text-white font-cute px-6 py-2.5 rounded-full shadow-md hover:shadow-lg transition flex items-center gap-2">
+                            <i class="fa-brands fa-whatsapp text-lg"></i> Chat WhatsApp
+                        </a>
+                        <button onclick="spawnExtraItems()" class="bg-grape-500 hover:bg-grape-700 text-white font-cute px-5 py-2.5 rounded-full shadow-md hover:shadow-lg transition flex items-center gap-2">
+                            <span>🍇 Hujan Anggur & Bintang! ⭐</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </header>
+
+        <!-- BACKGROUND PREVIEW / GALLERY (3 FOTO LATAR 16:9) -->
+        <section class="space-y-4">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+                <div class="flex items-center gap-3">
+                    <div class="bg-lilac-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold font-cute">1</div>
+                    <h2 class="text-2xl font-bold font-cute text-lilac-900">Pilihan Background (16:9)</h2>
+                </div>
+                <div class="flex items-center gap-2 flex-wrap">
+                    <button id="auto-bg-btn" onclick="toggleAutoBg()" class="text-xs bg-lilac-600 text-white px-3.5 py-1.5 rounded-full font-cute shadow hover:bg-lilac-700 transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-rotate"></i> Auto Ganti BG: <span id="auto-bg-status">ON</span>
+                    </button>
+                    <span class="text-xs bg-lilac-100 text-lilac-800 px-3 py-1.5 rounded-full font-cute border border-lilac-300">
+                        💜 Atau klik kartu untuk ganti manual
+                    </span>
+                </div>
+            </div>
+            
+            <p class="text-slate-600 text-sm">Latar belakang akan berganti otomatis setiap 5 detik di antara 3 foto 16:9 di bawah ini (<code>photo 1_2.jpeg</code>, <code>photo2_2.jpeg</code>, <code>photo3_2.jpeg</code>):</p>
+
+            <div class="grid md:grid-cols-3 gap-5">
+                <!-- BG CARD 1 -->
+                <div id="bg-card-1" class="glass-card rounded-2xl p-2.5 shadow-md hover:shadow-xl transition border-2 border-lilac-500 group flex flex-col justify-between">
+                    <div>
+                        <div class="aspect-video w-full overflow-hidden rounded-xl bg-lilac-100 relative cursor-pointer" onclick="selectManualBg(0)">
+                            <img id="bg-img-1"
+                                 src="photo 1_2.jpeg" 
+                                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=800&auto=format&fit=crop';"
+                                 alt="Background 1" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="p-3 text-center">
+                            <h3 class="font-bold text-lilac-900 text-sm font-cute">Background Style 01</h3>
+                            <p class="text-xs text-slate-500">Close-up Silver Hair (photo 1_2.jpeg)</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-1.5 mt-1">
+                        <button onclick="selectManualBg(0)" class="flex-1 bg-lilac-600 hover:bg-lilac-700 text-white text-xs font-cute py-2 rounded-xl transition shadow flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-paintbrush"></i> Pakai Background
+                        </button>
+                        <button onclick="document.getElementById('bg1-upload').click()" title="Ganti gambar ini" class="bg-lilac-100 hover:bg-lilac-200 text-lilac-800 px-3 py-2 rounded-xl text-xs transition">
+                            <i class="fa-solid fa-folder-open"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- BG CARD 2 -->
+                <div id="bg-card-2" class="glass-card rounded-2xl p-2.5 shadow-md hover:shadow-xl transition border-2 border-lilac-200 group flex flex-col justify-between">
+                    <div>
+                        <div class="aspect-video w-full overflow-hidden rounded-xl bg-lilac-100 relative cursor-pointer" onclick="selectManualBg(1)">
+                            <img id="bg-img-2"
+                                 src="photo2_2.jpeg" 
+                                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=800&auto=format&fit=crop';"
+                                 alt="Background 2" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="p-3 text-center">
+                            <h3 class="font-bold text-lilac-900 text-sm font-cute">Background Style 02</h3>
+                            <p class="text-xs text-slate-500">Action Pose Art (photo2_2.jpeg)</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-1.5 mt-1">
+                        <button onclick="selectManualBg(1)" class="flex-1 bg-grape-500 hover:bg-grape-700 text-white text-xs font-cute py-2 rounded-xl transition shadow flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-paintbrush"></i> Pakai Background
+                        </button>
+                        <button onclick="document.getElementById('bg2-upload').click()" title="Ganti gambar ini" class="bg-lilac-100 hover:bg-lilac-200 text-lilac-800 px-3 py-2 rounded-xl text-xs transition">
+                            <i class="fa-solid fa-folder-open"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- BG CARD 3 -->
+                <div id="bg-card-3" class="glass-card rounded-2xl p-2.5 shadow-md hover:shadow-xl transition border-2 border-lilac-200 group flex flex-col justify-between">
+                    <div>
+                        <div class="aspect-video w-full overflow-hidden rounded-xl bg-lilac-100 relative cursor-pointer" onclick="selectManualBg(2)">
+                            <img id="bg-img-3"
+                                 src="photo3_2.jpeg" 
+                                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1557682250-33bd709cbe85?q=80&w=800&auto=format&fit=crop';"
+                                 alt="Background 3" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="p-3 text-center">
+                            <h3 class="font-bold text-lilac-900 text-sm font-cute">Background Style 03</h3>
+                            <p class="text-xs text-slate-500">Royal Armor Art (photo3_2.jpeg)</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-1.5 mt-1">
+                        <button onclick="selectManualBg(2)" class="flex-1 bg-lilac-700 hover:bg-lilac-800 text-white text-xs font-cute py-2 rounded-xl transition shadow flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-paintbrush"></i> Pakai Background
+                        </button>
+                        <button onclick="document.getElementById('bg3-upload').click()" title="Ganti gambar ini" class="bg-lilac-100 hover:bg-lilac-200 text-lilac-800 px-3 py-2 rounded-xl text-xs transition">
+                            <i class="fa-solid fa-folder-open"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- KEAHLIAN / SKILLS DKV -->
+        <section class="glass-card rounded-3xl p-6 md:p-8 shadow-xl border-2 border-lilac-200 space-y-6">
+            <div class="flex items-center gap-3">
+                <div class="bg-grape-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold font-cute">2</div>
+                <h2 class="text-2xl font-bold font-cute text-lilac-900">Keahlian & Kompetensi DKV</h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- DESIGN SKILLS -->
+                <div class="space-y-4">
+                    <h3 class="font-bold text-lilac-800 flex items-center gap-2 font-cute border-b border-lilac-200 pb-2">
+                        <i class="fa-solid fa-palette text-lilac-600"></i> Keahlian Desain & Seni
+                    </h3>
+                    
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                                <span>Desain Grafis & Poster Estetik</span>
+                                <span>92%</span>
+                            </div>
+                            <div class="w-full bg-lilac-100 h-2.5 rounded-full overflow-hidden">
+                                <div class="bg-lilac-600 h-full rounded-full" style="width: 92%"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                                <span>Ilustrasi Digital & Character Art</span>
+                                <span>88%</span>
+                            </div>
+                            <div class="w-full bg-lilac-100 h-2.5 rounded-full overflow-hidden">
+                                <div class="bg-grape-500 h-full rounded-full" style="width: 88%"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                                <span>Branding, Kemasan & Tipografi</span>
+                                <span>85%</span>
+                            </div>
+                            <div class="w-full bg-lilac-100 h-2.5 rounded-full overflow-hidden">
+                                <div class="bg-lilac-400 h-full rounded-full" style="width: 85%"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                                <span>Fotografi & Color Grading</span>
+                                <span>84%</span>
+                            </div>
+                            <div class="w-full bg-lilac-100 h-2.5 rounded-full overflow-hidden">
+                                <div class="bg-grape-700 h-full rounded-full" style="width: 84%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SOFTWARE SKILLS -->
+                <div class="space-y-4">
+                    <h3 class="font-bold text-lilac-800 flex items-center gap-2 font-cute border-b border-lilac-200 pb-2">
+                        <i class="fa-solid fa-laptop-code text-grape-500"></i> Software & Aplikasi
+                    </h3>
+                    
+                    <div class="grid grid-cols-2 gap-3 text-sm">
+                        <div class="p-3 bg-white/80 rounded-xl border border-lilac-200 flex items-center gap-3">
+                            <i class="fa-solid fa-pen-nib text-lilac-600 text-lg"></i>
+                            <div>
+                                <div class="font-bold text-slate-800 text-xs">CorelDRAW</div>
+                                <div class="text-[10px] text-slate-500">Desain Vektor & Logo</div>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-white/80 rounded-xl border border-lilac-200 flex items-center gap-3">
+                            <i class="fa-solid fa-image text-grape-500 text-lg"></i>
+                            <div>
+                                <div class="font-bold text-slate-800 text-xs">Adobe Photoshop</div>
+                                <div class="text-[10px] text-slate-500">Manipulasi & Editing</div>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-white/80 rounded-xl border border-lilac-200 flex items-center gap-3">
+                            <i class="fa-solid fa-bezier-curve text-lilac-600 text-lg"></i>
+                            <div>
+                                <div class="font-bold text-slate-800 text-xs">Adobe Illustrator</div>
+                                <div class="text-[10px] text-slate-500">Ilustrasi & Layout</div>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-white/80 rounded-xl border border-lilac-200 flex items-center gap-3">
+                            <i class="fa-solid fa-paintbrush text-grape-500 text-lg"></i>
+                            <div>
+                                <div class="font-bold text-slate-800 text-xs">IbisPaint / Canva</div>
+                                <div class="text-[10px] text-slate-500">Digital Art & Konten</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- KONTAK & FOOTER -->
+        <section id="contact" class="glass-dark text-white rounded-3xl p-6 md:p-8 shadow-xl space-y-6 relative overflow-hidden">
+            <div class="flex items-center gap-3">
+                <div class="bg-lilac-300 text-lilac-900 w-8 h-8 rounded-full flex items-center justify-center font-bold font-cute">3</div>
+                <h2 class="text-2xl font-bold font-cute text-white">Kontak & Kolaborasi</h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <!-- WHATSAPP -->
+                <a href="https://wa.me/628976913092" target="_blank" class="bg-white/10 hover:bg-white/20 p-4 rounded-2xl border border-lilac-300/20 transition flex items-center gap-4 group">
+                    <div class="w-12 h-12 rounded-xl bg-lilac-500 flex items-center justify-center text-2xl text-white group-hover:scale-110 transition shadow-md">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs text-lilac-200">WhatsApp / Telepon</div>
+                        <div class="font-bold text-base tracking-wide">+62 897-6913-092</div>
+                    </div>
+                </a>
+
+                <!-- LOKASI -->
+                <div class="bg-white/10 p-4 rounded-2xl border border-lilac-300/20 flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-grape-500 flex items-center justify-center text-xl text-white shadow-md">
+                        <i class="fa-solid fa-map-location-dot"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs text-lilac-200">Alamat / Domisili</div>
+                        <div class="font-bold text-base">Jepara Kota, Jawa Tengah</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center pt-4 border-t border-white/10 text-xs text-lilac-200 font-cute">
+                © CV Lilac Aesthetic • Salma Alimah Salsabil — Siswa DKV Jepara Kota 🍇⭐
+            </div>
+        </section>
+
+    </div>
+
+    <!-- JAVASCRIPT ANIMASI JATUH & INTERAKSI -->
+    <script>
+        let collectedCount = 0;
+        let currentBgIndex = 0;
+        let autoBgEnabled = true;
+        const bgImgIds = ['bg-img-1', 'bg-img-2', 'bg-img-3'];
+        const bgCardIds = ['bg-card-1', 'bg-card-2', 'bg-card-3'];
+
+        const container = document.getElementById('falling-container');
+        const counterEl = document.getElementById('claim-count');
+
+        // Ganti Background Berdasarkan Index (0, 1, 2)
+        function setBgByIndex(index) {
+            currentBgIndex = index;
+            const imgEl = document.getElementById(bgImgIds[index]);
+            const bgLayer = document.getElementById('site-bg-layer');
+            if (imgEl && imgEl.src) {
+                bgLayer.style.backgroundImage = `url('${imgEl.src}')`;
+            }
+
+            // Highlight kartu background yang sedang aktif
+            bgCardIds.forEach((cardId, idx) => {
+                const card = document.getElementById(cardId);
+                if (card) {
+                    if (idx === index) {
+                        card.classList.remove('border-lilac-200');
+                        card.classList.add('border-lilac-500', 'ring-2', 'ring-lilac-300');
+                    } else {
+                        card.classList.remove('border-lilac-500', 'ring-2', 'ring-lilac-300');
+                        card.classList.add('border-lilac-200');
+                    }
+                }
+            });
+        }
+
+        // Pilih background secara manual
+        function selectManualBg(index) {
+            setBgByIndex(index);
+        }
+
+        // Toggle Auto Ganti Background
+        function toggleAutoBg() {
+            autoBgEnabled = !autoBgEnabled;
+            const statusEl = document.getElementById('auto-bg-status');
+            const btnEl = document.getElementById('auto-bg-btn');
+            if (autoBgEnabled) {
+                statusEl.innerText = 'ON';
+                btnEl.classList.replace('bg-slate-500', 'bg-lilac-600');
+            } else {
+                statusEl.innerText = 'OFF';
+                btnEl.classList.replace('bg-lilac-600', 'bg-slate-500');
+            }
+        }
+
+        // Timer otomatis gonta-ganti background setiap 5 detik
+        setInterval(() => {
+            if (autoBgEnabled) {
+                const nextIndex = (currentBgIndex + 1) % bgImgIds.length;
+                setBgByIndex(nextIndex);
+            }
+        }, 5000);
+
+        // Preview foto profil jika dipilih manual dari perangkat
+        function previewCustomImage(event, targetImgId) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById(targetImgId).src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Preview & langsung terapkan background jika dipilih manual dari perangkat
+        function previewCustomBg(event, targetImgId) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgEl = document.getElementById(targetImgId);
+                    imgEl.src = e.target.result;
+                    document.getElementById('site-bg-layer').style.backgroundImage = `url('${e.target.result}')`;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Karakter yang jatuh: Bintang dan Anggur
+        const items = ['🍇', '⭐', '🍇', '✨', '🌟', '🍇'];
+
+        function createFallingItem() {
+            const item = document.createElement('div');
+            item.className = 'falling-item';
+            
+            const randomIcon = items[Math.floor(Math.random() * items.length)];
+            item.innerHTML = randomIcon;
+
+            const size = Math.random() * 20 + 20; // 20px - 40px
+            const left = Math.random() * 95; // 0% - 95% width
+            const duration = Math.random() * 5 + 4; // 4s - 9s duration
+            const delay = Math.random() * 2; // 0s - 2s delay
+
+            item.style.fontSize = `${size}px`;
+            item.style.left = `${left}vw`;
+            item.style.animationDuration = `${duration}s`;
+            item.style.animationDelay = `${delay}s`;
+
+            // Event klik untuk klaim bintang / anggur
+            item.addEventListener('click', (e) => {
+                collectedCount++;
+                counterEl.innerText = collectedCount;
+                
+                createPopEffect(e.clientX, e.clientY, randomIcon);
+                item.remove();
+            });
+
+            container.appendChild(item);
+
+            setTimeout(() => {
+                if (item.parentNode) {
+                    item.remove();
+                }
+            }, (duration + delay) * 1000);
+        }
+
+        // Efek Pop "+1" saat item diklaim
+        function createPopEffect(x, y, symbol) {
+            const pop = document.createElement('div');
+            pop.innerText = `+1 ${symbol}`;
+            pop.style.position = 'fixed';
+            pop.style.left = `${x}px`;
+            pop.style.top = `${y}px`;
+            pop.style.color = '#7e22ce';
+            pop.style.fontWeight = 'bold';
+            pop.style.fontFamily = 'Fredoka, sans-serif';
+            pop.style.pointerEvents = 'none';
+            pop.style.zIndex = '100';
+            pop.style.transition = 'all 0.6s ease-out';
+            
+            document.body.appendChild(pop);
+
+            setTimeout(() => {
+                pop.style.transform = 'translateY(-40px) scale(1.3)';
+                pop.style.opacity = '0';
+            }, 20);
+
+            setTimeout(() => {
+                pop.remove();
+            }, 650);
+        }
+
+        // Loop spawn otomatis
+        setInterval(createFallingItem, 600);
+
+        // Tombol hujan bintang & anggur ekstra
+        function spawnExtraItems() {
+            for (let i = 0; i < 15; i++) {
+                setTimeout(createFallingItem, i * 100);
+            }
+        }
+
+        // Jalankan animasi awal saat halaman dibuka
+        window.onload = function() {
+            spawnExtraItems();
+            // Pastikan background awal tersinkronisasi
+            setTimeout(() => setBgByIndex(0), 100);
+        };
+    </script>
+</body>
+</html>
